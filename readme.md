@@ -1,7 +1,8 @@
 # The process of building my own blog server through Django
 
 My blog: https://blog.zeping.top
-The url may not work because of Chinese legislation. At that time try [this one](http://111.229.136.123:8080) or [another one](111.229.136.123:80).
+The url may not work because of Chinese legislation. At that time try [this one](http://111.229.136.123:8080) 
+or [another one](111.229.136.123:80).
 
 ## 0. Feature
 
