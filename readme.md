@@ -31,8 +31,8 @@ Before I build up my own website, I need to create an account of database to man
 
 ```SQL
 CREATE DATABASE blog_db CHARSET=utf8;
-GRANT ALL ON *.* TO 'blog'@'localhost' IDENTIFIED BY 'XzP1363380773';
-SET PASSWORD FOR root@localhost=password('XzP1363380773');
+GRANT ALL ON *.* TO 'blog'@'localhost' IDENTIFIED BY 'YOURPASSWORD';
+SET PASSWORD FOR root@localhost=password('YOURPASSWORD');
 flush privileges;
 ```
 
@@ -71,7 +71,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog_db',
         'USER': 'blog',
-        'PASSWORD': 'XzP1363380773',
+        'PASSWORD': 'YOURPASSWORD',
         'HOST': '127.0.0.1',
         'PORT': '',
     }
