@@ -1,7 +1,7 @@
 # The process of building my own blog server through Django
 
 My blog: https://blog.zeping.top
-The url may not work because of Chinese legislation. At that time try [this one](http://111.229.136.123:8080) or [another one](111.229.136.123:80).
+The url may not work because of Chinese legislation. At that time try [this one](http://111.229.136.123:8080) or [another one](http://111.229.136.123:80).
 
 ## 0. Feature
 
@@ -806,4 +806,70 @@ Django provides `Feed` to support this function.
 
 Create new file `blog/feeds.py`
 
+```python
+from django.contrib.syndication.views import Feed
+ 
+from .models import Post
+
+class AllPostsRssFeed(Feed):
+    title = "Zeping's Home"
+    link = '/'
+    Description = "All Articles in Zeping's Blog"
+
+    def items(self):
+        return Post.objects.all()
+
+    def item_title(self, item):
+        return "[{}] {}".format(item.category, item.title)
+        
+    def item_description(self, item):
+        return item.body_html
+```
+
+Add new properties for `Post`
+
+```python
+# blog/models.py
+class Post(models.Model):
+	  ...
+    @property
+    def toc(self):
+        return self.rich_content.get("toc", "")
+ 
+    @property
+    def body_html(self):
+        return self.rich_content.get("content", "")
+ 
+    @property
+    def rich_content(self):
+        return generate_rich_content(self.body)
+    
+def generate_rich_content(value):
+        md = markdown.Markdown(
+            extensions=[
+                "markdown.extensions.extra",
+                "markdown.extensions.codehilite",
+            ]
+        )
+        content = md.convert(value)
+        
+        return {"content": content}
+```
+
+URL should be configured in main `urls.py`
+```python
+# mysite/urls.
+from django.contrib import admin
+from django.urls import path,include
+from blog.feeds import AllPostsRssFeed
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
+    path('', include('comments.urls')),
+    path('all/rss/', AllPostsRssFeed(), name='rss'),
+]
+```
+
+Don't forget to edit the url of form in `base.html`
 
