@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+    {% block main %}
+            {% for post in post_list %}
+                <article class="post post-{{ post.pk }}">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                        </h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="{% url 'blog:category' post.category.pk %}">{{ post.category.name }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+                            <span class="post-author"><a href="#">{{ post.author }}</a></span>
+                            <span class="comments-link"><a href="#">{{ post.get_num_comments }} comments</a></span>
+                            <span class="views-count"><a href="#">{{ post.counts }}&emsp;read</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{{ post.excerpt }}</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{{ post.get_absolute_url }}" class="more-link">continue to read <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="no-post">No post right now!</div>
+                {% endfor %}
+                
+                <!-- {% if is_paginated %}
+                <div class="pagination-simple">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">{{ page_obj.number }} / {{ paginator.num_pages }} </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+                </div>
+                {% endif %} -->
+                {% if is_paginated %}
+                    {{ page_obj.render }}
+                {% endif %}
+    {% endblock main %}
